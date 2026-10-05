@@ -23,9 +23,9 @@ Data Preparation
 
 ## Current Status
 
-**Status:** Step 1 — Basic Codebase Setup complete.
+**Status:** Step 3 — Exploratory Data Analysis (EDA) complete.
 
-The project structure, environment configuration, initial dependencies, and test framework have been set up. Dataset loading, exploratory data analysis (EDA), preprocessing, and modeling are planned for subsequent steps.
+The project structure, environment configuration, automated test framework, dataset loader & quality validators, visualization utilities, exploratory data analysis notebook, and key report figures are in place. Data preprocessing, feature engineering, and model training are planned for subsequent steps.
 
 ## Project Structure
 
@@ -40,10 +40,11 @@ customer-churn-prediction/
 │
 ├── src/              # Source code for the project
 │   ├── __init__.py
-│   ├── data/         # Data loading and ingestion scripts
-│   ├── features/     # Feature engineering and transformation
-│   ├── models/       # Model training, inference, and serialization
-│   └── evaluation/   # Evaluation metrics and performance visualizers
+│   ├── data/          # Data loading and ingestion scripts
+│   ├── visualization/ # Data visualization and plotting utilities
+│   ├── features/      # Feature engineering and transformation
+│   ├── models/        # Model training, inference, and serialization
+│   └── evaluation/    # Evaluation metrics and performance visualizers
 │
 ├── models/           # Trained and serialized model binaries
 │

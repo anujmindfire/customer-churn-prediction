@@ -18,6 +18,8 @@ def test_src_imports():
         "src.features",
         "src.models",
         "src.evaluation",
+        "src.visualization",
+        "src.churn_prediction.visualization",
     ]
     for pkg in packages:
         mod = importlib.import_module(pkg)

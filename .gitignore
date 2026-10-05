@@ -39,9 +39,10 @@ models/*
 *.h5
 *.onnx
 
-# Generated reports & figures (keep folder placeholder)
+# Generated reports & figures (keep folder placeholder and committed figures)
 reports/figures/*
 !reports/figures/.gitkeep
+!reports/figures/*.png
 
 # Distribution & build outputs
 build/
