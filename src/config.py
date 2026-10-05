@@ -1,7 +1,10 @@
 """Compatibility alias for src.churn_prediction.config."""
 
 from src.churn_prediction.config import (
+    BASELINE_MODEL_PATH,
+    CONFUSION_MATRIX_FIGURE_PATH,
     DATA_DIR,
+    DEFAULT_LOGISTIC_REGRESSION_PARAMS,
     FIGURES_DIR,
     ID_COLS,
     MODELS_DIR,
@@ -22,7 +25,10 @@ from src.churn_prediction.config import (
 )
 
 __all__ = [
+    "BASELINE_MODEL_PATH",
+    "CONFUSION_MATRIX_FIGURE_PATH",
     "DATA_DIR",
+    "DEFAULT_LOGISTIC_REGRESSION_PARAMS",
     "FIGURES_DIR",
     "ID_COLS",
     "MODELS_DIR",

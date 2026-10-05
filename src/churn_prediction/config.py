@@ -27,3 +27,11 @@ ID_COLS = ["customerID"]
 TARGET_MAPPING = {"No": 0, "Yes": 1}
 POSITIVE_CLASS = 1
 NEGATIVE_CLASS = 0
+
+# Baseline Model settings
+BASELINE_MODEL_PATH = MODELS_DIR / "logistic_regression_baseline.joblib"
+CONFUSION_MATRIX_FIGURE_PATH = FIGURES_DIR / "logistic_regression_confusion_matrix.png"
+DEFAULT_LOGISTIC_REGRESSION_PARAMS = {
+    "max_iter": 1000,
+    "random_state": RANDOM_STATE,
+}

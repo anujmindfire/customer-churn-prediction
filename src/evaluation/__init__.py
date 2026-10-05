@@ -1,1 +1,19 @@
 """Model evaluation and metrics modules."""
+
+from src.churn_prediction.evaluation.metrics import (
+    calculate_classification_metrics,
+    compute_confusion_matrix,
+    format_metrics_summary,
+    get_classification_report,
+    get_confusion_matrix_breakdown,
+)
+from src.churn_prediction.evaluation.plots import plot_confusion_matrix
+
+__all__ = [
+    "calculate_classification_metrics",
+    "compute_confusion_matrix",
+    "format_metrics_summary",
+    "get_classification_report",
+    "get_confusion_matrix_breakdown",
+    "plot_confusion_matrix",
+]
