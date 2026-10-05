@@ -341,9 +341,7 @@ def plot_categorical_churn_rates(
     else:
         ncols = 2 if n_plots <= 4 else 3
         nrows = int(np.ceil(n_plots / ncols))
-        fig, grid_axes = plt.subplots(
-            nrows, ncols, figsize=(6.5 * ncols, 4.5 * nrows)
-        )
+        fig, grid_axes = plt.subplots(nrows, ncols, figsize=(6.5 * ncols, 4.5 * nrows))
         axes_list = list(np.array(grid_axes).ravel())
 
     for idx, col in enumerate(cols):
@@ -358,9 +356,9 @@ def plot_categorical_churn_rates(
         )
 
         rates = (churn_counts / total_counts) * 100
-        summary_df = pd.DataFrame(
-            {"rate": rates, "count": total_counts}
-        ).sort_values(by="rate", ascending=False)
+        summary_df = pd.DataFrame({"rate": rates, "count": total_counts}).sort_values(
+            by="rate", ascending=False
+        )
 
         if top_n is not None and top_n > 0:
             summary_df = summary_df.head(top_n)
@@ -371,8 +369,7 @@ def plot_categorical_churn_rates(
 
         # Highlight categories with churn higher than baseline
         bar_colors = [
-            "#d95f02" if r > overall_churn_rate else "#2b5c8f"
-            for r in rates_vals
+            "#d95f02" if r > overall_churn_rate else "#2b5c8f" for r in rates_vals
         ]
 
         bars = ax.bar(
@@ -399,9 +396,7 @@ def plot_categorical_churn_rates(
         ax.grid(axis="y", linestyle="--", alpha=0.5)
         ax.tick_params(axis="x", rotation=25)
 
-        for bar, rate, count in zip(
-            bars, rates_vals, counts_vals, strict=False
-        ):
+        for bar, rate, count in zip(bars, rates_vals, counts_vals, strict=False):
             ax.annotate(
                 f"{rate:.1f}%\n(n={count:,})",
                 (bar.get_x() + bar.get_width() / 2, bar.get_height()),
@@ -420,10 +415,7 @@ def plot_categorical_churn_rates(
     for unused_idx in range(n_plots, len(axes_list)):
         axes_list[unused_idx].set_visible(False)
 
-    main_title = (
-        title
-        or f"Churn Rate by Category (Overall: {overall_churn_rate:.1f}%)"
-    )
+    main_title = title or f"Churn Rate by Category (Overall: {overall_churn_rate:.1f}%)"
     fig.suptitle(main_title, y=1.02)
     plt.tight_layout()
     _save_figure(fig, save_path)
@@ -487,9 +479,7 @@ def plot_correlation_heatmap(
         sub_df[col] = pd.to_numeric(sub_df[col], errors="coerce")
 
     sub_df = sub_df.dropna(how="all")
-    numeric_cols = [
-        col for col in sub_df.columns if sub_df[col].dropna().nunique() > 1
-    ]
+    numeric_cols = [col for col in sub_df.columns if sub_df[col].dropna().nunique() > 1]
 
     if len(numeric_cols) < 2:
         raise ValueError(

@@ -1,0 +1,43 @@
+"""Compatibility alias for src.churn_prediction.config."""
+
+from src.churn_prediction.config import (
+    DATA_DIR,
+    FIGURES_DIR,
+    ID_COLS,
+    MODELS_DIR,
+    NEGATIVE_CLASS,
+    POSITIVE_CLASS,
+    PREPROCESSOR_PATH,
+    PROCESSED_DATA_DIR,
+    PROJECT_ROOT,
+    RANDOM_STATE,
+    RAW_DATA_DIR,
+    RAW_DATA_PATH,
+    REPORTS_DIR,
+    TARGET_COL,
+    TARGET_MAPPING,
+    TEST_SIZE,
+    TRAIN_SIZE,
+    VAL_SIZE,
+)
+
+__all__ = [
+    "DATA_DIR",
+    "FIGURES_DIR",
+    "ID_COLS",
+    "MODELS_DIR",
+    "NEGATIVE_CLASS",
+    "POSITIVE_CLASS",
+    "PREPROCESSOR_PATH",
+    "PROCESSED_DATA_DIR",
+    "PROJECT_ROOT",
+    "RANDOM_STATE",
+    "RAW_DATA_DIR",
+    "RAW_DATA_PATH",
+    "REPORTS_DIR",
+    "TARGET_COL",
+    "TARGET_MAPPING",
+    "TEST_SIZE",
+    "TRAIN_SIZE",
+    "VAL_SIZE",
+]

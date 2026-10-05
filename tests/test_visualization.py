@@ -202,9 +202,7 @@ def test_plot_numerical_distribution_save(
 ):
     """Verify plot_numerical_distribution saves image to disk."""
     save_file = tmp_path / "numerical_test.png"
-    plot_numerical_distribution(
-        sample_churn_df, column="tenure", save_path=save_file
-    )
+    plot_numerical_distribution(sample_churn_df, column="tenure", save_path=save_file)
     assert save_file.exists()
     assert save_file.stat().st_size > 0
 
@@ -263,9 +261,7 @@ def test_plot_categorical_churn_rates_save(
 def test_plot_categorical_churn_rates_invalid(sample_churn_df: pd.DataFrame):
     """Verify error handling on invalid categorical columns or targets."""
     with pytest.raises(KeyError):
-        plot_categorical_churn_rates(
-            sample_churn_df, categorical_cols="InvalidCol"
-        )
+        plot_categorical_churn_rates(sample_churn_df, categorical_cols="InvalidCol")
 
     with pytest.raises(KeyError):
         plot_categorical_churn_rates(
@@ -294,9 +290,7 @@ def test_plot_correlation_heatmap_specified_cols(sample_churn_df: pd.DataFrame):
     assert ax.get_title() == "Custom Correlation"
 
 
-def test_plot_correlation_heatmap_save(
-    sample_churn_df: pd.DataFrame, tmp_path: Path
-):
+def test_plot_correlation_heatmap_save(sample_churn_df: pd.DataFrame, tmp_path: Path):
     """Verify plot_correlation_heatmap saves image to disk."""
     save_file = tmp_path / "corr_heatmap.png"
     plot_correlation_heatmap(sample_churn_df, save_path=save_file)

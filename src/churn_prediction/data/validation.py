@@ -100,9 +100,7 @@ def check_duplicates(df: pd.DataFrame) -> int:
     return dup_count
 
 
-def validate_target(
-    df: pd.DataFrame, target_col: str = "Churn"
-) -> dict[str, Any]:
+def validate_target(df: pd.DataFrame, target_col: str = "Churn") -> dict[str, Any]:
     """Validate presence, distributions, and class balance of target column.
 
     Args:
@@ -124,9 +122,9 @@ def validate_target(
 
     series = df[target_col]
     counts_dict = series.value_counts(dropna=False).to_dict()
-    proportions_dict = series.value_counts(
-        normalize=True, dropna=False
-    ).round(4).to_dict()
+    proportions_dict = (
+        series.value_counts(normalize=True, dropna=False).round(4).to_dict()
+    )
     missing_count = int(series.isnull().sum())
     unique_vals = list(series.dropna().unique())
 
@@ -246,16 +244,15 @@ def check_suspicious_values(df: pd.DataFrame) -> dict[str, Any]:
 
             # Check for string placeholders
             placeholder_mask = series.apply(
-                lambda val: isinstance(val, str)
-                and val.strip().lower() in known_placeholders
+                lambda val: (
+                    isinstance(val, str) and val.strip().lower() in known_placeholders
+                )
             )
             placeholder_count = int(placeholder_mask.sum())
 
             total_suspicious = whitespace_count + placeholder_count
             if total_suspicious > 0:
-                indices = list(
-                    df[whitespace_mask | placeholder_mask].index[:10]
-                )
+                indices = list(df[whitespace_mask | placeholder_mask].index[:10])
                 pct = round((total_suspicious / len(df)) * 100, 4)
                 suspicious_by_column[str(col)] = {
                     "total_suspicious": total_suspicious,

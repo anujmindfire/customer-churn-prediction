@@ -14,8 +14,14 @@ def test_src_imports():
     """Verify src subpackages can be imported."""
     packages = [
         "src",
+        "src.config",
+        "src.churn_prediction.config",
         "src.data",
+        "src.churn_prediction.data",
         "src.features",
+        "src.features.preprocessing",
+        "src.churn_prediction.features",
+        "src.churn_prediction.features.preprocessing",
         "src.models",
         "src.evaluation",
         "src.visualization",

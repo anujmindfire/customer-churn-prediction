@@ -91,7 +91,9 @@ def test_validate_target_missing_column(sample_df: pd.DataFrame):
 
 def test_identify_feature_types(sample_df: pd.DataFrame):
     """Test feature classification into numerical, categorical, id, target."""
-    types = identify_feature_types(sample_df, target_col="Churn", id_cols=["customerID"])
+    types = identify_feature_types(
+        sample_df, target_col="Churn", id_cols=["customerID"]
+    )
     assert types["identifier"] == ["customerID"]
     assert types["target"] == ["Churn"]
     assert "SeniorCitizen" in types["numerical"]
@@ -140,7 +142,10 @@ def test_real_dataset_quality():
     suspicious = report["suspicious_values"]
     assert suspicious["has_suspicious_values"] is True
     assert "TotalCharges" in suspicious["columns_with_suspicious_values"]
-    assert suspicious["columns_with_suspicious_values"]["TotalCharges"]["whitespace_count"] == 11
+    assert (
+        suspicious["columns_with_suspicious_values"]["TotalCharges"]["whitespace_count"]
+        == 11
+    )
 
     # Real target balance
     target = report["target_validation"]
