@@ -1,0 +1,49 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data directory (ignore generated/raw datasets except .gitkeep and base raw dataset)
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/telco_customer_churn.csv
+data/processed/*
+!data/processed/.gitkeep
+
+# Model artifacts (ignore generated binaries except .gitkeep)
+models/*
+!models/.gitkeep
+*.pkl
+*.joblib
+*.h5
+*.onnx
+
+# Generated reports & figures (keep folder placeholder)
+reports/figures/*
+!reports/figures/.gitkeep
+
+# Distribution & build outputs
+build/
+dist/
+*.egg-info/
