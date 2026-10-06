@@ -8,6 +8,9 @@ DATA_DIR = PROJECT_ROOT / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 RAW_DATA_PATH = RAW_DATA_DIR / "telco_customer_churn.csv"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
+TRAIN_DATA_PATH = PROCESSED_DATA_DIR / "train.csv"
+VAL_DATA_PATH = PROCESSED_DATA_DIR / "val.csv"
+TEST_DATA_PATH = PROCESSED_DATA_DIR / "test.csv"
 MODELS_DIR = PROJECT_ROOT / "models"
 PREPROCESSOR_PATH = MODELS_DIR / "preprocessor.joblib"
 REPORTS_DIR = PROJECT_ROOT / "reports"
@@ -34,8 +37,9 @@ LOGISTIC_REGRESSION_MODEL_PATH = BASELINE_MODEL_PATH
 DECISION_TREE_MODEL_PATH = MODELS_DIR / "decision_tree_baseline.joblib"
 RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_baseline.joblib"
 
-# Improved / Candidate Model settings
+# Improved & Final Model settings
 FINAL_CANDIDATE_MODEL_PATH = MODELS_DIR / "final_candidate_model.joblib"
+FINAL_MODEL_PATH = MODELS_DIR / "final_model.joblib"
 TUNED_LOGISTIC_REGRESSION_MODEL_PATH = MODELS_DIR / "logistic_regression_tuned.joblib"
 TUNED_RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_tuned.joblib"
 
@@ -64,3 +68,5 @@ FEATURE_IMPORTANCE_FIGURE_PATH = FIGURES_DIR / "random_forest_feature_importance
 MODEL_IMPROVEMENT_FIGURE_PATH = FIGURES_DIR / "model_improvement_comparison.png"
 IMPROVED_MODEL_CM_PATH = FIGURES_DIR / "improved_model_confusion_matrix.png"
 THRESHOLD_TUNING_FIGURE_PATH = FIGURES_DIR / "threshold_tuning_curve.png"
+FINAL_CONFUSION_MATRIX_PATH = FIGURES_DIR / "final_confusion_matrix.png"
+FINAL_COMPARISON_FIGURE_PATH = FIGURES_DIR / "final_test_performance_comparison.png"
