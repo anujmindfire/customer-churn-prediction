@@ -246,3 +246,87 @@ def plot_feature_importance(
         logger.info("Saved feature importance plot to %s", out)
 
     return fig
+
+
+def plot_threshold_tuning_curve(
+    thresholds: np.ndarray,
+    f1_scores: np.ndarray,
+    precisions: np.ndarray,
+    recalls: np.ndarray,
+    optimal_threshold: float,
+    optimal_f1: float,
+    title: str = "Decision Threshold Optimization Curve",
+    save_path: Path | str | None = None,
+) -> plt.Figure:
+    """Plot F1, Precision, and Recall trade-off curves across decision thresholds.
+
+    Highlights the optimal threshold maximizing the F1 score.
+
+    Args:
+        thresholds: 1D array of evaluated probability thresholds.
+        f1_scores: 1D array of corresponding F1 scores.
+        precisions: 1D array of corresponding Precision scores.
+        recalls: 1D array of corresponding Recall scores.
+        optimal_threshold: Cutoff value yielding the peak F1 score.
+        optimal_f1: Peak F1 score achieved.
+        title: Title for the chart.
+        save_path: Optional path to save the generated figure.
+
+    Returns:
+        plt.Figure: Matplotlib Figure object.
+
+    Raises:
+        ValueError: If array lengths do not match or arrays are empty.
+    """
+    if len(thresholds) == 0:
+        raise ValueError("Cannot plot threshold curve for empty arrays.")
+    if not (len(thresholds) == len(f1_scores) == len(precisions) == len(recalls)):
+        raise ValueError("All input arrays must have the same length.")
+
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+
+    ax.plot(thresholds, f1_scores, label="F1 Score", color="#2563eb", linewidth=2.5)
+    ax.plot(
+        thresholds,
+        precisions,
+        label="Precision",
+        color="#059669",
+        linewidth=2.0,
+        linestyle="--",
+    )
+    ax.plot(
+        thresholds,
+        recalls,
+        label="Recall",
+        color="#d97706",
+        linewidth=2.0,
+        linestyle=":",
+    )
+
+    ax.axvline(
+        x=optimal_threshold,
+        color="#dc2626",
+        linestyle="-.",
+        linewidth=1.8,
+        label=f"Optimal $\\tau$ = {optimal_threshold:.3f} (F1 = {optimal_f1:.4f})",
+    )
+
+    ax.set_title(title, fontsize=13, fontweight="bold", pad=15)
+    ax.set_xlabel(
+        "Decision Threshold ($\\tau$)", fontsize=11, fontweight="semibold", labelpad=8
+    )
+    ax.set_ylabel("Metric Score", fontsize=11, fontweight="semibold", labelpad=8)
+    ax.set_xlim(0.05, 0.95)
+    ax.set_ylim(0.0, 1.05)
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.legend(loc="lower center", frameon=True, fontsize=10)
+
+    plt.tight_layout()
+
+    if save_path:
+        out = Path(save_path).resolve()
+        out.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(out, dpi=300, bbox_inches="tight")
+        logger.info("Saved threshold tuning curve to %s", out)
+
+    return fig

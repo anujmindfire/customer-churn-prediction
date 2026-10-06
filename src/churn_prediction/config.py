@@ -34,6 +34,11 @@ LOGISTIC_REGRESSION_MODEL_PATH = BASELINE_MODEL_PATH
 DECISION_TREE_MODEL_PATH = MODELS_DIR / "decision_tree_baseline.joblib"
 RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_baseline.joblib"
 
+# Improved / Candidate Model settings
+FINAL_CANDIDATE_MODEL_PATH = MODELS_DIR / "final_candidate_model.joblib"
+TUNED_LOGISTIC_REGRESSION_MODEL_PATH = MODELS_DIR / "logistic_regression_tuned.joblib"
+TUNED_RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_tuned.joblib"
+
 DEFAULT_LOGISTIC_REGRESSION_PARAMS = {
     "max_iter": 1000,
     "random_state": RANDOM_STATE,
@@ -56,3 +61,6 @@ DECISION_TREE_CM_PATH = FIGURES_DIR / "decision_tree_validation_confusion_matrix
 RANDOM_FOREST_CM_PATH = FIGURES_DIR / "random_forest_validation_confusion_matrix.png"
 MODEL_COMPARISON_FIGURE_PATH = FIGURES_DIR / "model_validation_comparison.png"
 FEATURE_IMPORTANCE_FIGURE_PATH = FIGURES_DIR / "random_forest_feature_importance.png"
+MODEL_IMPROVEMENT_FIGURE_PATH = FIGURES_DIR / "model_improvement_comparison.png"
+IMPROVED_MODEL_CM_PATH = FIGURES_DIR / "improved_model_confusion_matrix.png"
+THRESHOLD_TUNING_FIGURE_PATH = FIGURES_DIR / "threshold_tuning_curve.png"

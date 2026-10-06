@@ -2,7 +2,7 @@
 
 ## Overview
 
-Customer Churn Prediction is an end-to-end machine learning project designed to build, validate, and compare predictive models that identify whether a customer is likely to churn (cancel their service or subscription) using historical customer demographics, account characteristics, and service usage data.
+Customer Churn Prediction is an end-to-end machine learning project designed to build, validate, compare, and improve predictive models that identify whether a customer is likely to churn (cancel their service or subscription) using historical customer demographics, account characteristics, and service usage data.
 
 ## ML Lifecycle Architecture
 
@@ -17,71 +17,60 @@ Step 4: Data Preprocessing & 70/15/15 Split
   ↓
 Step 5: Baseline Model (Logistic Regression)
   ↓
-Step 6: Multiple Model Training & Validation Comparison  <-- [COMPLETED]
+Step 6: Multiple Model Training & Validation Comparison
   ↓
-Step 7: Hyperparameter Tuning, Class Balancing & Final Test Evaluation (Upcoming)
+Step 7: Model Improvement (Tuning, Class Balancing & Thresholds)  <-- [COMPLETED]
   ↓
-Step 8: Serving & Model Deployment
+Step 8: Final Test Evaluation & Production Artifacts (Upcoming)
 ```
 
 ---
 
-## Current Status: Step 6 — Multiple Model Training and Validation Comparison
+## Current Status: Step 7 — Model Improvement
 
-Three candidate models were trained strictly on `data/processed/train.csv` (4,930 samples, 45 preprocessed features) and evaluated on `data/processed/val.csv` (1,056 samples):
+In Step 7, we applied systematic improvement techniques to address the high rate of missed churners (False Negatives) in the baseline models. All hyperparameter searches and threshold discoveries were conducted **strictly on training data** using 5-fold Stratified Cross-Validation.
 
-1. **Logistic Regression (Baseline)**: $L_2$ regularized linear classification (`max_iter=1000`, `random_state=42`)
-2. **Decision Tree**: Unconstrained recursive tree partitioner (`DecisionTreeClassifier(random_state=42)`)
-3. **Random Forest**: 100-tree bagging ensemble (`RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)`)
+> **Strict Test Set Protection**: `data/processed/test.csv` remains completely locked, unopened, and untouched. All evaluations and comparisons are performed solely on `data/processed/val.csv` (1,056 samples, 280 churners / 776 retained).
 
-> **Strict Test Set Protection**: `data/processed/test.csv` remains completely locked and untouched. All model comparisons and selections are performed strictly on the validation partition.
+---
+
+### Improvement Techniques Applied
+
+1. **Hyperparameter Tuning (`GridSearchCV`)**:
+   - Logistic Regression: Tuned regularization inverse $C \in [0.01, 5.0]$ and solver parameters.
+   - Random Forest: Regularized tree architecture (`max_depth=12`, `min_samples_leaf=8`, `min_samples_split=20`, `n_estimators=100`) to resolve the severe overfitting observed in Step 6.
+2. **Class Balancing (Cost-Sensitive Weighting)**:
+   - Evaluated `class_weight='balanced'` and custom cost ratios (`{0: 1.0, 1: 2.0}`) to penalize false negatives and boost churner detection.
+3. **Out-of-Fold Decision Threshold Optimization**:
+   - Evaluated candidate cutoffs $\tau \in [0.1, 0.9]$ on cross-validated training probability predictions without data leakage. Found optimal cutoff $\tau = 0.290$ (peak CV F1 = 0.6359).
 
 ---
 
 ### Validation Performance Comparison Table
 
-| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-|:---|:---:|:---:|:---:|:---:|:---:|
-| **Logistic Regression (Baseline)** | **0.8059** | **0.6459** | **0.5929** | **0.6182** | **0.8454** |
-| **Decision Tree** | 0.7178 | 0.4690 | 0.4857 | 0.4772 | 0.6430 |
-| **Random Forest** | 0.7756 | 0.5939 | 0.4857 | 0.5344 | 0.8131 |
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC | Missed Churners (FN) |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Logistic Regression (Baseline)** | **0.8059** | **0.6459** | 0.5929 | 0.6182 | **0.8454** | 114 |
+| **Tuned Logistic Regression** | 0.7519 | 0.5222 | 0.7571 | 0.6181 | 0.8451 | 68 (-40.4%) |
+| **Baseline LR + Optimal Threshold ($\tau=0.290$)** | 0.7472 | 0.5149 | 0.8000 | 0.6266 | **0.8454** | 56 (-50.9%) |
+| **Tuned Random Forest (Champion)** | 0.7557 | 0.5251 | **0.8214** | **0.6407** | 0.8421 | **50 (-65.3%)** |
 
 ### Confusion Matrix Breakdown (1,056 Validation Samples)
 
-| Model | True Negatives (TN) | False Positives (FP) | False Negatives (FN) | True Positives (TP) |
-|:---|:---:|:---:|:---:|:---:|
-| **Logistic Regression** | **685 (64.87%)** | **91 (8.62%)** | **114 (10.80%)** | **166 (15.72%)** |
-| **Decision Tree** | 622 (58.90%) | 154 (14.58%) | 144 (13.64%) | 136 (12.88%) |
-| **Random Forest** | 683 (64.68%) | 93 (8.81%) | 144 (13.64%) | 136 (12.88%) |
-
-*Key Takeaway*: Logistic Regression catches **30 more actual churners** (166 vs 136, 59.29% recall vs 48.57%) and generates fewer false alarms than the unconstrained tree models.
-
----
-
-### Overfitting & Generalization Diagnostics
-
-| Model | Train Accuracy | Val Accuracy | Train F1 | Val F1 | Generalization Gap (F1) | Diagnostic |
-|:---|:---:|:---:|:---:|:---:|:---:|:---|
-| **Logistic Regression** | 0.8037 | 0.8059 | 0.5980 | 0.6182 | **+0.0202** | **Stable (Zero variance error)** |
-| **Decision Tree** | 0.9980 | 0.7178 | 0.9962 | 0.4772 | **-0.5190** | **Severe Overfitting (Memorization)** |
-| **Random Forest** | 0.9980 | 0.7756 | 0.9962 | 0.5344 | **-0.4618** | **High Overfitting (Needs pruning)** |
-
-- **Decision Tree** completely memorizes training patterns (Train F1 = 0.9962) but degrades sharply on validation data (Val F1 = 0.4772).
-- **Random Forest** benefits from bagging variance reduction, lifting ROC-AUC to 0.8131 (vs 0.6430 for DT), but unpruned deep trees still exhibit high variance.
-- **Logistic Regression** emerges as the clear **validation champion** because linear inductive bias prevents noise memorization in the absence of hyperparameter tuning.
+| Model | True Negatives (TN) | False Positives (FP) | False Negatives (FN) | True Positives (TP) | Churn Detection Rate |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| **Baseline LR** | **685 (64.87%)** | **91 (8.62%)** | 114 (10.80%) | 166 (15.72%) | 59.29% |
+| **Tuned LR** | 582 (55.11%) | 194 (18.37%) | 68 (6.44%) | 212 (20.08%) | 75.71% |
+| **LR + Optimal Threshold** | 565 (53.50%) | 211 (19.98%) | 56 (5.30%) | 224 (21.21%) | 80.00% |
+| **Tuned RF (Champion)** | 568 (53.79%) | 208 (19.70%) | **50 (4.73%)** | **230 (21.78%)** | **82.14%** |
 
 ---
 
-### Top Predictive Features (Random Forest Gini Importance)
+### Key Business & Technical Takeaways
 
-1. `TotalCharges`: **16.0%**
-2. `tenure`: **13.6%**
-3. `MonthlyCharges`: **13.5%**
-4. `Contract_Month-to-month`: **5.0%**
-5. `PaymentMethod_Electronic check`: **3.4%**
-6. `InternetService_Fiber optic`: **3.1%**
-
-> **Non-Causal Interpretation**: Gini feature importance measures **predictive partitioning utility** across tree splits, not causal mechanisms. High tenure and TotalCharges signify account maturity and duration of service, not a direct causal intervention to prevent churn.
+1. **Massive Reduction in Missed Churners**: Tuned Random Forest catches **230 out of 280 churners** (Recall 82.14%), slashing missed churners from 144 down to 50—a **65.3% reduction in lost retention opportunities**.
+2. **Overfitting Successfully Resolved**: By regularizing maximum depth and minimum leaf samples, Random Forest training-to-validation F1 gap shrank from $-0.4618$ to $-0.0754$, turning a severely overfitted baseline into the highest-performing generalizer.
+3. **Current Best Model**: **Tuned Random Forest** is serialized as `models/final_candidate_model.joblib`.
 
 ---
 
@@ -91,7 +80,7 @@ Three candidate models were trained strictly on `data/processed/train.csv` (4,93
 customer-churn-prediction/
 │
 ├── data/
-│   ├── raw/                      # Raw, unmodified dataset files
+│   ├── raw/                      # Raw dataset files
 │   └── processed/                # Preprocessed partitions (train.csv, val.csv, test.csv)
 │
 ├── notebooks/                    # Interactive analysis notebooks
@@ -99,39 +88,47 @@ customer-churn-prediction/
 │   ├── 02_exploratory_data_analysis.ipynb
 │   ├── 03_preprocessing.ipynb
 │   ├── 04_baseline_logistic_regression.ipynb
-│   └── 05_model_comparison.ipynb # Step 6 multi-model training and validation comparison
+│   ├── 05_model_comparison.ipynb
+│   └── 06_model_improvement.ipynb # Step 7 hyperparameter tuning & class balancing
 │
 ├── src/                          # Reusable project source code
 │   ├── config.py                 # Configuration paths and hyperparameter defaults
 │   ├── data/                     # Data loading and ingestion scripts
 │   ├── visualization/            # Data visualization and plotting utilities
 │   ├── features/                 # Preprocessing pipeline and feature encoders
-│   ├── models/                   # Estimator factories, training, inference, serialization
-│   └── evaluation/               # Metric computers, comparison tables, confusion matrices
+│   ├── models/                   # Estimator factories, training, inference, tuning
+│   │   ├── model.py
+│   │   └── tuning.py             # GridSearchCV and threshold optimization utilities
+│   └── evaluation/               # Metrics, comparison tables, confusion matrices, plots
 │
 ├── models/                       # Serialized model artifacts
 │   ├── preprocessor.joblib
 │   ├── logistic_regression_baseline.joblib
 │   ├── decision_tree_baseline.joblib
-│   └── random_forest_baseline.joblib
+│   ├── random_forest_baseline.joblib
+│   ├── logistic_regression_tuned.joblib
+│   ├── random_forest_tuned.joblib
+│   └── final_candidate_model.joblib # Current best model (Tuned Random Forest)
 │
 ├── reports/
 │   └── figures/                  # Publication-quality figure exports
 │       ├── model_validation_comparison.png
-│       ├── random_forest_feature_importance.png
-│       ├── logistic_regression_validation_confusion_matrix.png
-│       ├── decision_tree_validation_confusion_matrix.png
-│       └── random_forest_validation_confusion_matrix.png
+│       ├── model_improvement_comparison.png
+│       ├── improved_model_confusion_matrix.png
+│       ├── threshold_tuning_curve.png
+│       └── random_forest_feature_importance.png
 │
 ├── scripts/
-│   └── train_and_compare_models.py # Executable training and comparison script
+│   ├── train_and_compare_models.py # Step 6 execution script
+│   └── train_and_tune_models.py    # Step 7 tuning and improvement script
 │
-├── tests/                        # Comprehensive automated test suite (pytest)
+├── tests/                        # Comprehensive automated test suite (115 passing tests)
 │   ├── test_data_loader.py
 │   ├── test_data_validation.py
 │   ├── test_preprocessing.py
 │   ├── test_model.py
 │   ├── test_model_comparison.py
+│   ├── test_tuning.py            # Tuning & threshold optimization test suite
 │   ├── test_metrics.py
 │   └── test_visualization.py
 │
@@ -151,22 +148,23 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Train and Compare Models
-
-Execute the training script to fit all candidate models on `train.csv`, evaluate on `val.csv`, and export serialized models and figures:
+### 2. Run Model Improvement Pipeline
 
 ```bash
-python scripts/train_and_compare_models.py
+python scripts/train_and_tune_models.py
 ```
 
-### 3. Run Automated Tests
+### 3. Run Automated Tests & Quality Checks
 
 ```bash
 pytest tests/
+ruff check .
+ruff format --check .
+mypy src
 ```
 
-### 4. Open Step 6 Notebook
+### 4. Interactive Notebook
 
 ```bash
-jupyter notebook notebooks/05_model_comparison.ipynb
+jupyter notebook notebooks/06_model_improvement.ipynb
 ```
