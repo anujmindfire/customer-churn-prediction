@@ -21,9 +21,11 @@ Step 6: Multiple Model Training & Validation Comparison (DT & RF)
   ↓
 Step 7: Model Improvement (Tuning, Class Balancing & Thresholds)
   ↓
-Step 8: Final Model Selection & Unbiased Test Evaluation  <-- [COMPLETED]
+Step 8: Final Model Selection & Unbiased Test Evaluation
   ↓
-Production Deployment & API Serving (Future)
+Step 9: FastAPI REST API Service
+  ↓
+Step 10: Dockerization & Final Integration  <-- [COMPLETED]
 ```
 
 ---
@@ -159,7 +161,7 @@ customer-churn-prediction/
 │   ├── train_and_tune_models.py
 │   └── evaluate_final_model.py   # Final test evaluation execution script
 │
-├── tests/                        # Automated unit test suite (138 passing tests)
+├── tests/                        # Automated unit test suite (137 passing tests)
 │   ├── test_api.py               # FastAPI test suite (/health, /predict, validation)
 │   ├── test_data_loader.py
 │   ├── test_data_validation.py
@@ -171,6 +173,10 @@ customer-churn-prediction/
 │   ├── test_metrics.py
 │   └── test_visualization.py
 │
+├── Dockerfile                    # Production multi-stage container definition
+├── .dockerignore                 # Excludes cache, git, and local environment files
+├── docker-compose.yml            # Docker Compose service definition with healthcheck
+├── .env.example                  # Environment configuration template
 ├── requirements.txt
 └── README.md
 ```
@@ -268,9 +274,93 @@ curl -X POST http://localhost:8000/predict \
 
 ---
 
+## Dockerization & Container Execution (Step 10)
+
+The application is fully containerized using **Docker** and **Docker Compose**, following security best practices (non-root user, slim base image, layer caching, and active health checks).
+
+### End-to-End Prediction Pipeline
+
+```text
+HTTP Request (Client)
+        ↓
+FastAPI Endpoint (/predict)
+        ↓
+Pydantic Request Validation (CustomerDataRequest)
+        ↓
+ColumnTransformer Preprocessor (models/preprocessor.joblib)
+        ↓
+Tuned Random Forest Estimator (models/final_model.joblib)
+        ↓
+Binary Decision (Threshold 0.5) & Risk Probability
+        ↓
+HTTP Response JSON ({"prediction": "Churn", "probability": 0.82})
+```
+
+### 1. Build and Run with Docker Compose
+
+Build the container image:
+
+```bash
+docker compose build
+```
+
+Start the containerized service in detached mode:
+
+```bash
+docker compose up -d
+```
+
+Check running container status and health:
+
+```bash
+docker compose ps
+```
+
+View real-time service logs:
+
+```bash
+docker compose logs -f
+```
+
+Stop and remove container:
+
+```bash
+docker compose down
+```
+
+### 2. Standalone Docker Run
+
+Build the Docker image directly:
+
+```bash
+docker build -t customer-churn-prediction-api:latest .
+```
+
+Run the container:
+
+```bash
+docker run -d \
+  --name customer_churn_api \
+  -p 8000:8000 \
+  --env-file .env.example \
+  customer-churn-prediction-api:latest
+```
+
+### 3. Container Healthcheck Verification
+
+The container includes an automated healthcheck verifying `GET /health` every 15 seconds:
+
+```bash
+docker inspect --format='{{json .State.Health.Status}}' customer_churn_api
+```
+
+Expected output: `"healthy"`.
+
+---
+
 ## Setup & Execution
 
-### 1. Environment Setup
+### 1. Local Environment Setup
 
 ```bash
 python -m venv .venv
@@ -284,7 +374,7 @@ pip install -r requirements.txt
 python scripts/evaluate_final_model.py
 ```
 
-### 3. Launch FastAPI Service
+### 3. Launch Local FastAPI Service
 
 ```bash
 uvicorn churn_prediction.api.main:app --reload
@@ -304,4 +394,5 @@ mypy src
 ```bash
 jupyter notebook notebooks/07_final_evaluation.ipynb
 ```
+
 

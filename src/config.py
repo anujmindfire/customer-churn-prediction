@@ -1,6 +1,9 @@
 """Compatibility alias for src.churn_prediction.config."""
 
 from src.churn_prediction.config import (
+    API_HOST,
+    API_LOG_LEVEL,
+    API_PORT,
     BASELINE_MODEL_PATH,
     CONFUSION_MATRIX_FIGURE_PATH,
     DATA_DIR,
@@ -9,6 +12,7 @@ from src.churn_prediction.config import (
     DEFAULT_DECISION_TREE_PARAMS,
     DEFAULT_LOGISTIC_REGRESSION_PARAMS,
     DEFAULT_RANDOM_FOREST_PARAMS,
+    ENVIRONMENT,
     FEATURE_IMPORTANCE_FIGURE_PATH,
     FIGURES_DIR,
     FINAL_CANDIDATE_MODEL_PATH,
@@ -47,6 +51,9 @@ from src.churn_prediction.config import (
 )
 
 __all__ = [
+    "API_HOST",
+    "API_LOG_LEVEL",
+    "API_PORT",
     "BASELINE_MODEL_PATH",
     "CONFUSION_MATRIX_FIGURE_PATH",
     "DATA_DIR",
@@ -55,6 +62,7 @@ __all__ = [
     "DEFAULT_DECISION_TREE_PARAMS",
     "DEFAULT_LOGISTIC_REGRESSION_PARAMS",
     "DEFAULT_RANDOM_FOREST_PARAMS",
+    "ENVIRONMENT",
     "FEATURE_IMPORTANCE_FIGURE_PATH",
     "FIGURES_DIR",
     "FINAL_CANDIDATE_MODEL_PATH",

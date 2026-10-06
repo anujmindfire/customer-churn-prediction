@@ -11,3 +11,4 @@ mypy
 fastapi
 uvicorn
 httpx
+pre-commit
