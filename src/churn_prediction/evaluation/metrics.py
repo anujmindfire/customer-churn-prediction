@@ -196,12 +196,42 @@ def format_metrics_summary(
     Returns:
         pd.DataFrame: Formatted DataFrame suitable for table display and model comparison.
     """
-    row = {"Model": model_name}
+    row: dict[str, Any] = {"Model": model_name}
     for k, v in metrics.items():
-        # Clean column name formatting: 'roc_auc' -> 'ROC-AUC', 'f1' -> 'F1 Score'
         col_name = "ROC-AUC" if k == "roc_auc" else k.capitalize()
         if k == "f1":
             col_name = "F1 Score"
         row[col_name] = v
 
     return pd.DataFrame([row])
+
+
+def compare_models(
+    metrics_dict: dict[str, dict[str, float]],
+) -> pd.DataFrame:
+    """Consolidate multiple model evaluation metric dictionaries into a comparative DataFrame.
+
+    Args:
+        metrics_dict: Dictionary mapping model names to their respective metrics dictionaries
+            (as produced by calculate_classification_metrics).
+
+    Returns:
+        pd.DataFrame: Comparative table with columns:
+            ['Model', 'Accuracy', 'Precision', 'Recall', 'F1 Score', 'ROC-AUC'] (if available).
+
+    Raises:
+        ValueError: If metrics_dict is empty.
+    """
+    if not metrics_dict:
+        raise ValueError("Cannot compare models with empty metrics dictionary.")
+
+    rows = []
+    for model_name, metrics in metrics_dict.items():
+        summary_df = format_metrics_summary(metrics, model_name=model_name)
+        rows.append(summary_df)
+
+    comparison_df = pd.concat(rows, ignore_index=True)
+    logger.info(
+        "Generated model comparison summary table for %d models.", len(comparison_df)
+    )
+    return comparison_df

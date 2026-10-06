@@ -30,8 +30,29 @@ NEGATIVE_CLASS = 0
 
 # Baseline Model settings
 BASELINE_MODEL_PATH = MODELS_DIR / "logistic_regression_baseline.joblib"
-CONFUSION_MATRIX_FIGURE_PATH = FIGURES_DIR / "logistic_regression_confusion_matrix.png"
+LOGISTIC_REGRESSION_MODEL_PATH = BASELINE_MODEL_PATH
+DECISION_TREE_MODEL_PATH = MODELS_DIR / "decision_tree_baseline.joblib"
+RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_baseline.joblib"
+
 DEFAULT_LOGISTIC_REGRESSION_PARAMS = {
     "max_iter": 1000,
     "random_state": RANDOM_STATE,
 }
+DEFAULT_DECISION_TREE_PARAMS = {
+    "random_state": RANDOM_STATE,
+}
+DEFAULT_RANDOM_FOREST_PARAMS = {
+    "n_estimators": 100,
+    "random_state": RANDOM_STATE,
+    "n_jobs": -1,
+}
+
+# Visualization artifact paths
+CONFUSION_MATRIX_FIGURE_PATH = FIGURES_DIR / "logistic_regression_confusion_matrix.png"
+LOGISTIC_REGRESSION_CM_PATH = (
+    FIGURES_DIR / "logistic_regression_validation_confusion_matrix.png"
+)
+DECISION_TREE_CM_PATH = FIGURES_DIR / "decision_tree_validation_confusion_matrix.png"
+RANDOM_FOREST_CM_PATH = FIGURES_DIR / "random_forest_validation_confusion_matrix.png"
+MODEL_COMPARISON_FIGURE_PATH = FIGURES_DIR / "model_validation_comparison.png"
+FEATURE_IMPORTANCE_FIGURE_PATH = FIGURES_DIR / "random_forest_feature_importance.png"
