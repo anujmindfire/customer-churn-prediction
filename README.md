@@ -92,11 +92,12 @@ customer = {
 }
 
 result = predict_churn(customer)
-print(result.churn_prediction)   # 1 (Likely to Churn)
+print(result.churn_prediction)  # 1 (Likely to Churn)
 print(result.churn_probability)  # 0.6798 (67.98% Churn Risk)
 
 # Batch DataFrame inference
 import pandas as pd
+
 df_batch = pd.DataFrame([customer, customer])
 batch_results = predict_churn(df_batch)
 ```
@@ -128,7 +129,10 @@ customer-churn-prediction/
 │   ├── features/                 # Preprocessing pipeline and feature encoders
 │   ├── models/                   # Estimator factories, training, tuning, serialization
 │   ├── evaluation/               # Metrics, comparison tables, confusion matrices, plots
-│   └── predict.py                # Production predict_churn() inference interface
+│   ├── predict.py                # Production predict_churn() inference interface
+│   └── churn_prediction/api/     # FastAPI application & Pydantic request/response schemas
+│       ├── main.py               # Endpoints: GET /health, POST /predict
+│       └── schemas.py            # Pydantic schemas with data validation
 │
 ├── models/                       # Serialized model artifacts
 │   ├── preprocessor.joblib       # Fitted ColumnTransformer preprocessing pipeline
@@ -155,7 +159,8 @@ customer-churn-prediction/
 │   ├── train_and_tune_models.py
 │   └── evaluate_final_model.py   # Final test evaluation execution script
 │
-├── tests/                        # Automated unit test suite (122 passing tests)
+├── tests/                        # Automated unit test suite (138 passing tests)
+│   ├── test_api.py               # FastAPI test suite (/health, /predict, validation)
 │   ├── test_data_loader.py
 │   ├── test_data_validation.py
 │   ├── test_preprocessing.py
@@ -166,8 +171,99 @@ customer-churn-prediction/
 │   ├── test_metrics.py
 │   └── test_visualization.py
 │
-├── pyproject.toml / requirements.txt
+├── requirements.txt
 └── README.md
+```
+
+---
+
+## FastAPI REST API Service (Step 9)
+
+The churn prediction service exposes a production-ready REST API built with **FastAPI** and **Uvicorn**. It provides real-time single-customer churn inference and health monitoring without duplicating preprocessing or model logic.
+
+### 1. Start the API Server
+
+From the project root directory, run:
+
+```bash
+uvicorn churn_prediction.api.main:app --reload
+```
+
+Or alternatively:
+
+```bash
+uvicorn src.churn_prediction.api.main:app --reload
+```
+
+The server starts locally at `http://localhost:8000`.
+
+### 2. Interactive API Documentation (Swagger)
+
+FastAPI automatically generates interactive OpenAPI/Swagger documentation accessible in your browser at:
+
+* **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+* **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+* **OpenAPI Schema**: [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+### 3. API Endpoints
+
+| Method | Endpoint | Request Body | Response | Description |
+|---|---|---|---|---|
+| `GET` | `/health` | None | `{"status": "healthy"}` | Service health & liveness check |
+| `POST` | `/predict` | `CustomerDataRequest` (JSON) | `{"prediction": "...", "probability": ...}` | Real-time customer churn prediction |
+
+### 4. Example Requests & Responses
+
+#### Health Check
+
+```bash
+curl -X GET http://localhost:8000/health
+```
+
+**Response:**
+
+```json
+{
+  "status": "healthy"
+}
+```
+
+#### Churn Prediction
+
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customerID": "7590-VHVEG",
+    "gender": "Female",
+    "SeniorCitizen": 0,
+    "Partner": "Yes",
+    "Dependents": "No",
+    "tenure": 1,
+    "PhoneService": "No",
+    "MultipleLines": "No phone service",
+    "InternetService": "DSL",
+    "OnlineSecurity": "No",
+    "OnlineBackup": "Yes",
+    "DeviceProtection": "No",
+    "TechSupport": "No",
+    "StreamingTV": "No",
+    "StreamingMovies": "No",
+    "Contract": "Month-to-month",
+    "PaperlessBilling": "Yes",
+    "PaymentMethod": "Electronic check",
+    "MonthlyCharges": 29.85,
+    "TotalCharges": 29.85
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "prediction": "Churn",
+  "probability": 0.82
+}
 ```
 
 ---
@@ -188,7 +284,13 @@ pip install -r requirements.txt
 python scripts/evaluate_final_model.py
 ```
 
-### 3. Run Automated Tests & Code Quality Suite
+### 3. Launch FastAPI Service
+
+```bash
+uvicorn churn_prediction.api.main:app --reload
+```
+
+### 4. Run Automated Tests & Code Quality Suite
 
 ```bash
 pytest tests/
@@ -197,8 +299,9 @@ ruff format --check .
 mypy src
 ```
 
-### 4. Interactive Final Evaluation Notebook
+### 5. Interactive Final Evaluation Notebook
 
 ```bash
 jupyter notebook notebooks/07_final_evaluation.ipynb
 ```
+

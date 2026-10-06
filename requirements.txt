@@ -8,3 +8,6 @@ joblib
 pytest
 ruff
 mypy
+fastapi
+uvicorn
+httpx
