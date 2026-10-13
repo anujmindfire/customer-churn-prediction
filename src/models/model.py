@@ -1,8 +1,12 @@
 """Compatibility alias for src.churn_prediction.models.model."""
 
 from src.churn_prediction.models.model import (
+    create_all_candidate_models,
     create_baseline_pipeline,
+    create_decision_tree_model,
     create_logistic_regression_model,
+    create_random_forest_model,
+    get_model_feature_importances,
     load_model,
     predict_churn,
     predict_churn_probabilities,
@@ -11,8 +15,12 @@ from src.churn_prediction.models.model import (
 )
 
 __all__ = [
+    "create_all_candidate_models",
     "create_baseline_pipeline",
+    "create_decision_tree_model",
     "create_logistic_regression_model",
+    "create_random_forest_model",
+    "get_model_feature_importances",
     "load_model",
     "predict_churn",
     "predict_churn_probabilities",

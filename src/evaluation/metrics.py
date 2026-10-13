@@ -2,6 +2,7 @@
 
 from src.churn_prediction.evaluation.metrics import (
     calculate_classification_metrics,
+    compare_models,
     compute_confusion_matrix,
     format_metrics_summary,
     get_classification_report,
@@ -10,6 +11,7 @@ from src.churn_prediction.evaluation.metrics import (
 
 __all__ = [
     "calculate_classification_metrics",
+    "compare_models",
     "compute_confusion_matrix",
     "format_metrics_summary",
     "get_classification_report",

@@ -34,6 +34,14 @@ def test_src_imports():
         "src.churn_prediction.evaluation.plots",
         "src.visualization",
         "src.churn_prediction.visualization",
+        "src.churn_prediction.api",
+        "src.churn_prediction.api.main",
+        "src.churn_prediction.api.schemas",
+        "src.api",
+        "src.api.main",
+        "churn_prediction",
+        "churn_prediction.api",
+        "churn_prediction.api.main",
     ]
     for pkg in packages:
         mod = importlib.import_module(pkg)
