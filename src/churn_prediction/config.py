@@ -1,20 +1,31 @@
 """Configuration settings and project constants."""
 
+import os
 from pathlib import Path
 
 # Project paths
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
+PROJECT_ROOT = Path(
+    os.getenv("PROJECT_ROOT", str(Path(__file__).resolve().parent.parent.parent))
+)
+DATA_DIR = Path(os.getenv("DATA_DIR", str(PROJECT_ROOT / "data")))
 RAW_DATA_DIR = DATA_DIR / "raw"
 RAW_DATA_PATH = RAW_DATA_DIR / "telco_customer_churn.csv"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 TRAIN_DATA_PATH = PROCESSED_DATA_DIR / "train.csv"
 VAL_DATA_PATH = PROCESSED_DATA_DIR / "val.csv"
 TEST_DATA_PATH = PROCESSED_DATA_DIR / "test.csv"
-MODELS_DIR = PROJECT_ROOT / "models"
-PREPROCESSOR_PATH = MODELS_DIR / "preprocessor.joblib"
-REPORTS_DIR = PROJECT_ROOT / "reports"
+MODELS_DIR = Path(os.getenv("MODELS_DIR", str(PROJECT_ROOT / "models")))
+PREPROCESSOR_PATH = Path(
+    os.getenv("PREPROCESSOR_PATH", str(MODELS_DIR / "preprocessor.joblib"))
+)
+REPORTS_DIR = Path(os.getenv("REPORTS_DIR", str(PROJECT_ROOT / "reports")))
 FIGURES_DIR = REPORTS_DIR / "figures"
+
+# API Server configuration
+API_HOST = os.getenv("API_HOST", "0.0.0.0")
+API_PORT = int(os.getenv("API_PORT", "8000"))
+API_LOG_LEVEL = os.getenv("API_LOG_LEVEL", "info")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 
 # Random state for reproducible experiments
 RANDOM_STATE = 42
@@ -39,7 +50,12 @@ RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_baseline.joblib"
 
 # Improved & Final Model settings
 FINAL_CANDIDATE_MODEL_PATH = MODELS_DIR / "final_candidate_model.joblib"
-FINAL_MODEL_PATH = MODELS_DIR / "final_model.joblib"
+FINAL_MODEL_PATH = Path(
+    os.getenv(
+        "FINAL_MODEL_PATH",
+        os.getenv("MODEL_PATH", str(MODELS_DIR / "final_model.joblib")),
+    )
+)
 TUNED_LOGISTIC_REGRESSION_MODEL_PATH = MODELS_DIR / "logistic_regression_tuned.joblib"
 TUNED_RANDOM_FOREST_MODEL_PATH = MODELS_DIR / "random_forest_tuned.joblib"
 
