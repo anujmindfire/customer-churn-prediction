@@ -8,7 +8,7 @@ from sklearn.exceptions import NotFittedError
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
-from src.churn_prediction.models.model import (
+from src.models.model import (
     create_baseline_pipeline,
     create_logistic_regression_model,
     load_model,

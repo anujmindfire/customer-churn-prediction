@@ -10,14 +10,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 
-from src.churn_prediction.evaluation.metrics import (
+from src.evaluation.metrics import (
     compare_models,
 )
-from src.churn_prediction.evaluation.plots import (
+from src.evaluation.plots import (
     plot_feature_importance,
     plot_model_comparison,
 )
-from src.churn_prediction.models.model import (
+from src.models.model import (
     create_all_candidate_models,
     create_decision_tree_model,
     create_logistic_regression_model,

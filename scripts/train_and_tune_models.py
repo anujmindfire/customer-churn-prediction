@@ -10,7 +10,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.churn_prediction.config import (
+from src.config import (
     FINAL_CANDIDATE_MODEL_PATH,
     IMPROVED_MODEL_CM_PATH,
     MODEL_IMPROVEMENT_FIGURE_PATH,
@@ -21,25 +21,25 @@ from src.churn_prediction.config import (
     TUNED_LOGISTIC_REGRESSION_MODEL_PATH,
     TUNED_RANDOM_FOREST_MODEL_PATH,
 )
-from src.churn_prediction.evaluation.metrics import (
+from src.evaluation.metrics import (
     calculate_classification_metrics,
     compare_models,
     compute_confusion_matrix,
     get_confusion_matrix_breakdown,
 )
-from src.churn_prediction.evaluation.plots import (
+from src.evaluation.plots import (
     plot_confusion_matrix,
     plot_model_comparison,
     plot_threshold_tuning_curve,
 )
-from src.churn_prediction.models.model import (
+from src.models.model import (
     create_logistic_regression_model,
     predict_churn,
     predict_churn_probabilities,
     save_model,
     train_model,
 )
-from src.churn_prediction.models.tuning import (
+from src.models.tuning import (
     find_optimal_threshold_cv,
     predict_with_threshold,
     tune_logistic_regression,

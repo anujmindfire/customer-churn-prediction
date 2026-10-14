@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.churn_prediction.data.loader import load_dataset
-from src.churn_prediction.data.validation import (
+from src.data.loader import load_dataset
+from src.data.validation import (
     check_duplicates,
     check_missing_values,
     check_suspicious_values,

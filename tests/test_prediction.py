@@ -3,8 +3,8 @@
 import pandas as pd
 import pytest
 
-from src.churn_prediction.config import FINAL_MODEL_PATH, PREPROCESSOR_PATH
-from src.churn_prediction.predict import ChurnPredictionResult, predict_churn
+from src.config import FINAL_MODEL_PATH, PREPROCESSOR_PATH
+from src.predict import ChurnPredictionResult, predict_churn
 
 
 @pytest.fixture

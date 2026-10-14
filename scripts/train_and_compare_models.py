@@ -7,7 +7,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.churn_prediction.config import (
+from src.config import (
     DECISION_TREE_CM_PATH,
     DECISION_TREE_MODEL_PATH,
     FEATURE_IMPORTANCE_FIGURE_PATH,
@@ -19,18 +19,18 @@ from src.churn_prediction.config import (
     RANDOM_STATE,
     TARGET_COL,
 )
-from src.churn_prediction.evaluation.metrics import (
+from src.evaluation.metrics import (
     calculate_classification_metrics,
     compare_models,
     compute_confusion_matrix,
     get_confusion_matrix_breakdown,
 )
-from src.churn_prediction.evaluation.plots import (
+from src.evaluation.plots import (
     plot_confusion_matrix,
     plot_feature_importance,
     plot_model_comparison,
 )
-from src.churn_prediction.models.model import (
+from src.models.model import (
     create_all_candidate_models,
     get_model_feature_importances,
     predict_churn,

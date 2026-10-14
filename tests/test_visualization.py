@@ -8,27 +8,12 @@ import pytest
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from src.churn_prediction.visualization.plots import (
+from src.visualization.plots import (
     plot_categorical_churn_rates,
     plot_churn_distribution,
     plot_correlation_heatmap,
     plot_numerical_distribution,
     set_plot_style,
-)
-from src.visualization.plots import (
-    plot_categorical_churn_rates as alias_cat,
-)
-from src.visualization.plots import (
-    plot_churn_distribution as alias_churn,
-)
-from src.visualization.plots import (
-    plot_correlation_heatmap as alias_corr,
-)
-from src.visualization.plots import (
-    plot_numerical_distribution as alias_num,
-)
-from src.visualization.plots import (
-    set_plot_style as alias_style,
 )
 
 
@@ -305,12 +290,3 @@ def test_plot_correlation_heatmap_invalid(sample_churn_df: pd.DataFrame):
 
     with pytest.raises(KeyError):
         plot_correlation_heatmap(sample_churn_df, columns=["missing_col"])
-
-
-def test_visualization_alias_parity():
-    """Verify src.visualization alias exposes exact same functions."""
-    assert alias_churn is plot_churn_distribution
-    assert alias_num is plot_numerical_distribution
-    assert alias_cat is plot_categorical_churn_rates
-    assert alias_corr is plot_correlation_heatmap
-    assert alias_style is set_plot_style

@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 
-from src.churn_prediction.features.preprocessing import (
+from src.features.preprocessing import (
     build_preprocessing_pipeline,
     clean_dataset,
     fit_preprocessor,
