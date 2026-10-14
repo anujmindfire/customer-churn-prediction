@@ -181,7 +181,7 @@ After finalizing model selection, the untouched test partition (`data/processed/
 The project provides an inference interface supporting both single-customer dictionaries and batch pandas DataFrames:
 
 ```python
-from src.churn_prediction.predict import predict_churn
+from src.predict import predict_churn
 
 # Single customer prediction
 customer = {
@@ -228,7 +228,7 @@ The churn prediction service exposes a production REST API built with **FastAPI*
 From the project root directory:
 
 ```bash
-uvicorn src.churn_prediction.api.main:app --reload
+uvicorn src.api.main:app --reload
 ```
 
 The server starts at `http://localhost:8000`.
@@ -381,18 +381,17 @@ customer-churn-prediction/
 │   ├── 06_model_improvement.ipynb
 │   └── 07_final_evaluation.ipynb # Step 8 final test evaluation & prediction demo
 │
-├── src/                          # Source root
-│   └── churn_prediction/         # The single project package (all real code)
-│       ├── config.py             # Central configuration and file path definitions
-│       ├── predict.py            # Production predict_churn() inference interface
-│       ├── data/                 # loader.py, validation.py
-│       ├── visualization/        # plots.py (EDA plotting utilities)
-│       ├── features/             # preprocessing.py (cleaning, split, ColumnTransformer)
-│       ├── models/               # model.py (estimators), tuning.py (GridSearchCV, threshold)
-│       ├── evaluation/           # metrics.py, plots.py
-│       └── api/                  # FastAPI application & Pydantic schemas
-│           ├── main.py           # Endpoints: GET /health, POST /predict
-│           └── schemas.py        # Pydantic validation schemas
+├── src/                          # Modular production source code
+│   ├── config.py                 # Central configuration and file path definitions
+│   ├── predict.py                # Production predict_churn() inference interface
+│   ├── data/                     # loader.py, validation.py
+│   ├── visualization/            # plots.py (EDA plotting utilities)
+│   ├── features/                 # preprocessing.py (cleaning, split, ColumnTransformer)
+│   ├── models/                   # model.py (estimators), tuning.py (GridSearchCV, threshold)
+│   ├── evaluation/               # metrics.py, plots.py
+│   └── api/                      # FastAPI application & Pydantic schemas
+│       ├── main.py               # Endpoints: GET /health, POST /predict
+│       └── schemas.py            # Pydantic validation schemas
 │
 ├── models/                       # Serialized model artifacts
 │   ├── preprocessor.joblib       # Fitted ColumnTransformer pipeline

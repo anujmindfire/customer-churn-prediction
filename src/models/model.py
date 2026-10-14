@@ -23,7 +23,7 @@ from sklearn.pipeline import Pipeline  # type: ignore[import-untyped]
 from sklearn.tree import DecisionTreeClassifier  # type: ignore[import-untyped]
 from sklearn.utils.validation import check_is_fitted  # type: ignore[import-untyped]
 
-from src.churn_prediction.config import (
+from src.config import (
     BASELINE_MODEL_PATH,
     DEFAULT_DECISION_TREE_PARAMS,
     DEFAULT_LOGISTIC_REGRESSION_PARAMS,

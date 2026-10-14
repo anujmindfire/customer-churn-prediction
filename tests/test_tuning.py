@@ -8,8 +8,8 @@ import pytest
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
 
-from src.churn_prediction.evaluation.plots import plot_threshold_tuning_curve
-from src.churn_prediction.models.tuning import (
+from src.evaluation.plots import plot_threshold_tuning_curve
+from src.models.tuning import (
     find_optimal_threshold,
     find_optimal_threshold_cv,
     predict_with_threshold,

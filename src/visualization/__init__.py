@@ -1,6 +1,6 @@
 """Data visualization utilities for Customer Churn Prediction."""
 
-from src.churn_prediction.visualization.plots import (
+from src.visualization.plots import (
     plot_categorical_churn_rates,
     plot_churn_distribution,
     plot_correlation_heatmap,

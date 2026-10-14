@@ -10,7 +10,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.churn_prediction.config import (
+from src.config import (
     FINAL_CANDIDATE_MODEL_PATH,
     FINAL_COMPARISON_FIGURE_PATH,
     FINAL_CONFUSION_MATRIX_PATH,
@@ -20,24 +20,24 @@ from src.churn_prediction.config import (
     TEST_DATA_PATH,
     VAL_DATA_PATH,
 )
-from src.churn_prediction.evaluation.metrics import (
+from src.evaluation.metrics import (
     calculate_classification_metrics,
     compare_models,
     compute_confusion_matrix,
     get_classification_report,
     get_confusion_matrix_breakdown,
 )
-from src.churn_prediction.evaluation.plots import (
+from src.evaluation.plots import (
     plot_confusion_matrix,
     plot_model_comparison,
 )
-from src.churn_prediction.models.model import (
+from src.models.model import (
     load_model,
     predict_churn,
     predict_churn_probabilities,
     save_model,
 )
-from src.churn_prediction.predict import predict_churn as predict_customer_churn
+from src.predict import predict_churn as predict_customer_churn
 
 
 def main() -> None:

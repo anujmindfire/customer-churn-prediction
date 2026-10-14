@@ -12,12 +12,12 @@ from typing import Literal
 
 from fastapi import FastAPI, HTTPException, status
 
-from src.churn_prediction.api.schemas import (
+from src.api.schemas import (
     ChurnPredictionResponse,
     CustomerDataRequest,
     HealthResponse,
 )
-from src.churn_prediction.predict import (
+from src.predict import (
     ChurnPredictionResult,
     get_inference_artifacts,
     predict_churn,

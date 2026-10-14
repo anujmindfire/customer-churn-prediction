@@ -8,7 +8,7 @@ import pytest
 from sklearn.compose import ColumnTransformer
 from sklearn.exceptions import NotFittedError
 
-from src.churn_prediction.features.preprocessing import (
+from src.features.preprocessing import (
     build_preprocessing_pipeline,
     clean_dataset,
     fit_preprocessor,

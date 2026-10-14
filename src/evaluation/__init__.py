@@ -1,6 +1,6 @@
 """Evaluation metrics and plotting modules for Customer Churn Prediction."""
 
-from src.churn_prediction.evaluation.metrics import (
+from src.evaluation.metrics import (
     calculate_classification_metrics,
     compare_models,
     compute_confusion_matrix,
@@ -8,7 +8,7 @@ from src.churn_prediction.evaluation.metrics import (
     get_classification_report,
     get_confusion_matrix_breakdown,
 )
-from src.churn_prediction.evaluation.plots import (
+from src.evaluation.plots import (
     plot_confusion_matrix,
     plot_feature_importance,
     plot_model_comparison,

@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from src.churn_prediction.data.loader import load_dataset
+from src.data.loader import load_dataset
 
 
 def test_load_dataset_success(tmp_path: Path):

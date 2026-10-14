@@ -26,7 +26,7 @@ from sklearn.model_selection import (  # type: ignore[import-untyped]
     cross_val_predict,
 )
 
-from src.churn_prediction.config import RANDOM_STATE
+from src.config import RANDOM_STATE
 
 logger = logging.getLogger(__name__)
 

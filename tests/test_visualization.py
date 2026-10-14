@@ -8,7 +8,7 @@ import pytest
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from src.churn_prediction.visualization.plots import (
+from src.visualization.plots import (
     plot_categorical_churn_rates,
     plot_churn_distribution,
     plot_correlation_heatmap,

@@ -26,7 +26,7 @@ from sklearn.preprocessing import (  # type: ignore[import-untyped]
     StandardScaler,
 )
 
-from src.churn_prediction.config import (
+from src.config import (
     ID_COLS,
     PREPROCESSOR_PATH,
     PROCESSED_DATA_DIR,

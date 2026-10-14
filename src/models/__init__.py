@@ -1,6 +1,6 @@
 """Model modules for Customer Churn Prediction."""
 
-from src.churn_prediction.models.model import (
+from src.models.model import (
     create_all_candidate_models,
     create_baseline_pipeline,
     create_decision_tree_model,
@@ -13,7 +13,7 @@ from src.churn_prediction.models.model import (
     save_model,
     train_model,
 )
-from src.churn_prediction.models.tuning import (
+from src.models.tuning import (
     find_optimal_threshold,
     find_optimal_threshold_cv,
     predict_with_threshold,

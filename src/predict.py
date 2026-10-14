@@ -17,7 +17,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator  # type: ignore[import-untyped]
 from sklearn.compose import ColumnTransformer  # type: ignore[import-untyped]
 
-from src.churn_prediction.config import (
+from src.config import (
     FINAL_CANDIDATE_MODEL_PATH,
     FINAL_MODEL_PATH,
     PREPROCESSOR_PATH,

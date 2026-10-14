@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.churn_prediction.api.main import app
+from src.api.main import app
 
 client = TestClient(app)
 
@@ -193,7 +193,7 @@ def test_internal_error_does_not_leak_traceback(
 ) -> None:
     """Verify unexpected internal exception returns HTTP 500 without leaking stack traces."""
     with patch(
-        "src.churn_prediction.api.main.predict_churn",
+        "src.api.main.predict_churn",
         side_effect=RuntimeError("Unexpected internal pipeline crash at line 999!"),
     ):
         response = client.post("/predict", json=valid_customer_payload)
