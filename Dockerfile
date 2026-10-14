@@ -25,9 +25,8 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r /app/requirements.txt
 
-# Copy source code, package aliases, and serialized model artifacts
+# Copy source code and serialized model artifacts
 COPY src/ /app/src/
-COPY churn_prediction/ /app/churn_prediction/
 COPY models/ /app/models/
 COPY README.md /app/README.md
 
@@ -44,4 +43,4 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Launch FastAPI service with Uvicorn
-CMD ["uvicorn", "churn_prediction.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.churn_prediction.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

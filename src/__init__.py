@@ -1,5 +1,1 @@
-"""Customer Churn Prediction source package."""
-
-from src.churn_prediction.predict import ChurnPredictionResult, predict_churn
-
-__all__ = ["ChurnPredictionResult", "predict_churn"]
+"""Source root. All project code lives in ``src.churn_prediction``."""

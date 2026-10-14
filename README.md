@@ -48,7 +48,7 @@ The project uses the standard **Telco Customer Churn** dataset (`data/raw/telco_
   - *Account & Billing Information*: `tenure` (months), `Contract`, `PaperlessBilling`, `PaymentMethod`, `MonthlyCharges`, `TotalCharges`.
 * **Data Hygiene & Missing Value Handling**:
   - The `TotalCharges` column contained 11 whitespace string values (`" "`) corresponding to new customers with `tenure == 0`.
-  - These values were coerced to numeric `NaN` and imputed with the median of training data during preprocessing to prevent data leakage.
+  - These values were coerced to numeric and filled with `0.0` during cleaning (`clean_dataset`), because those customers have `tenure == 0` and have not been billed yet.
   - Zero duplicate rows were present.
 
 ---
@@ -228,7 +228,7 @@ The churn prediction service exposes a production REST API built with **FastAPI*
 From the project root directory:
 
 ```bash
-uvicorn churn_prediction.api.main:app --reload
+uvicorn src.churn_prediction.api.main:app --reload
 ```
 
 The server starts at `http://localhost:8000`.
@@ -381,17 +381,18 @@ customer-churn-prediction/
 │   ├── 06_model_improvement.ipynb
 │   └── 07_final_evaluation.ipynb # Step 8 final test evaluation & prediction demo
 │
-├── src/                          # Modular production source code
-│   ├── config.py                 # Central configuration and file path definitions
-│   ├── data/                     # Ingestion and schema validation
-│   ├── visualization/            # EDA plotting utilities
-│   ├── features/                 # Preprocessing pipeline and ColumnTransformer
-│   ├── models/                   # Estimator factories, training, and tuning
-│   ├── evaluation/               # Metrics, comparison tables, confusion matrices
-│   ├── predict.py                # Production predict_churn() inference interface
-│   └── churn_prediction/api/     # FastAPI application & Pydantic schemas
-│       ├── main.py               # Endpoints: GET /health, POST /predict
-│       └── schemas.py            # Pydantic validation schemas
+├── src/                          # Source root
+│   └── churn_prediction/         # The single project package (all real code)
+│       ├── config.py             # Central configuration and file path definitions
+│       ├── predict.py            # Production predict_churn() inference interface
+│       ├── data/                 # loader.py, validation.py
+│       ├── visualization/        # plots.py (EDA plotting utilities)
+│       ├── features/             # preprocessing.py (cleaning, split, ColumnTransformer)
+│       ├── models/               # model.py (estimators), tuning.py (GridSearchCV, threshold)
+│       ├── evaluation/           # metrics.py, plots.py
+│       └── api/                  # FastAPI application & Pydantic schemas
+│           ├── main.py           # Endpoints: GET /health, POST /predict
+│           └── schemas.py        # Pydantic validation schemas
 │
 ├── models/                       # Serialized model artifacts
 │   ├── preprocessor.joblib       # Fitted ColumnTransformer pipeline
